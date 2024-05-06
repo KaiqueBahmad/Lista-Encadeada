@@ -27,6 +27,9 @@ public class Lista {
 
     //Inserir no Fim
     public void addToEnd(Object obj) throws Exception {
+        if (this.search(obj)) {
+            return;
+        }
         Node objNode = new Node(obj);
         if (this.length == 0) {
             this.first.pointTo(objNode);
@@ -42,6 +45,9 @@ public class Lista {
 
     //Inserir por Posição
     public void insert(Object obj, int index) throws IndexOutOfRange {
+        if (this.search(obj)) {
+            return;
+        }
         Node current = this.first;
         int count = 0;
         Node objNode = new Node(obj);
@@ -77,7 +83,7 @@ public class Lista {
     // Remover do Final
     public void removeAtEnd() throws IndexOutOfRange {
         if (this.length >= 1) {
-            this.removeAtIndex(length - 1);
+            this.removeAtIndex(length);
             return;
         }
         throw new IndexOutOfRange();
@@ -87,13 +93,21 @@ public class Lista {
     public void removeByValue(Object target) {
         Node current = this.first;
         while (current.hasNext()) {
-            if (current.next() == target) {
+            if (current.next().getValue() == target) {
                 current.pointTo(current.next().next());
-                this.length--;
                 return;
             }
+            current = current.next();
         }
     }
+
+        // while (current.ne.hasNext()) {
+        //     if (current.next() == target) {
+        //         current.pointTo(current.next().next());
+        //         this.length--;
+        //         return;
+        //     }
+        // }
 
     // Remover por Posição
     public void removeAtIndex(int index) throws IndexOutOfRange {
@@ -121,15 +135,12 @@ public class Lista {
     public String toString() {
         String response = "["; 
         Node current = this.first;
-        boolean firstLoop = true;
         while (current.hasNext()) {
             current = current.next();
             if (current.getValue() != null) {
-                if (firstLoop) {
-
-                } else {
-                    response += (" "+current.getValue()+",");
-                }
+                response += (" "+current.getValue()+",");
+            } else {
+                break;
             }
         }
         if (response.endsWith(",")) {
@@ -147,6 +158,20 @@ public class Lista {
         System.out.println(lista.size());
         lista.get(0);
         lista.get(1);
+    }
+
+    public boolean search(Object target) {
+        Node current  = this.first;
+        while (current.hasNext()) {
+            if (current.getValue() == target) {
+                return true;
+            }
+            current = current.next();
+        }
+        if (current.getValue() == target) {
+            return true;
+        }
+        return false;
     }
 
 }
